@@ -13,6 +13,7 @@ public readonly partial struct MonsterAspect : IAspect {
 public struct MonsterTestData : IComponentData
 {
     public float hp;
+    public float speed;
 }
 
 
@@ -27,11 +28,11 @@ public partial struct MonsterTestSystem:ISystem
     public void OnCreate(ref SystemState state) { 
         //Entity monster=state.EntityManager.CreateEntity();空的实体
         //创建一个具有...组件的实体
-        Entity monster=state.EntityManager.CreateEntity(typeof(MonsterTestData),typeof(LocalTransform));
-        state.EntityManager.SetComponentData(monster, new MonsterTestData()
-        {
-            hp=100
-        });
+        //Entity monster=state.EntityManager.CreateEntity(typeof(MonsterTestData),typeof(LocalTransform));
+        //state.EntityManager.SetComponentData(monster, new MonsterTestData()
+        //{
+        //    hp=100
+        //});
 
     }
 
@@ -46,7 +47,7 @@ public partial struct MonsterTestSystem:ISystem
 
         foreach (MonsterAspect i in SystemAPI.Query<MonsterAspect>())
         {
-            i.localTransform.ValueRW.Position += float3 * SystemAPI.Time.DeltaTime;
+            i.localTransform.ValueRW.Position += float3 *i.monsterData.ValueRW.speed * SystemAPI.Time.DeltaTime;
             i.monsterData.ValueRW.hp -= SystemAPI.Time.DeltaTime;
         }
     }
