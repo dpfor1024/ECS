@@ -5,6 +5,8 @@ public class MonsterAuthoring : MonoBehaviour
 {
     public float hp;
     public float speed;
+    public float createinterval;
+    public GameObject bulletPrefab;
     public class MonsterBake : Baker<MonsterAuthoring>
     {
         public override void Bake(MonsterAuthoring authoring)
@@ -13,7 +15,13 @@ public class MonsterAuthoring : MonoBehaviour
             Entity entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponent<MonsterTestData>(entity,new MonsterTestData() { 
                 hp = authoring.hp,
-                speed = authoring.speed
+                createinterval = authoring.createinterval,
+                bullteProrotype=GetEntity(authoring.bulletPrefab, TransformUsageFlags.Dynamic)
+            });
+
+            AddComponent<MoveData>(entity, new MoveData()
+            {                
+                speed = authoring.speed,
             });
         }
     }
